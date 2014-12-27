@@ -3,6 +3,11 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -34,6 +39,16 @@ public class OperationPanel extends JPanel {
 	 * The button labeled "Clear"
 	 */
 	protected JButton clearButton;
+	
+	/**
+	 * The button labeled "Load"
+	 */
+	protected JButton loadButton;
+	
+	/**
+	 * The button labeled "Save"
+	 */
+	protected JButton saveButton;
 
 	/**
 	 * The center area for matrix and vector input
@@ -55,7 +70,10 @@ public class OperationPanel extends JPanel {
 	 */
 	protected JTextArea vectorTextArea;
 
-	protected JTextArea resultArea;
+	/**
+	 * The textarea for displaying result
+	 */
+	protected JTextArea resultTextArea;
 	
 	public OperationPanel() {
 
@@ -68,20 +86,27 @@ public class OperationPanel extends JPanel {
 		inverseButton.setToolTipText("Get matrix inversion result");
 		clearButton = new JButton("Clear");
 		clearButton.setToolTipText("Clears all the contents");
+		loadButton = new JButton("Load");
+		loadButton.setToolTipText("Load computation from file");
+		saveButton = new JButton("Save");
+		saveButton.setToolTipText("Save computation to file");
 		ToolTipManager.sharedInstance().setInitialDelay(5);
 
 		// Action Listeners
 		luButton.addActionListener(new LUActionListener());
 		inverseButton.addActionListener(new InverseActionListener());
 		clearButton.addActionListener(new ClearActionListener());
-
+		loadButton.addActionListener(new LoadActionListener());
+		saveButton.addActionListener(new SaveActionListener());
+		
 		bottomPanel = new JPanel();
 		bottomPanel.add(luButton);
 		bottomPanel.add(inverseButton);
 		bottomPanel.add(clearButton);
+		bottomPanel.add(loadButton);
+		bottomPanel.add(saveButton);
 
 		this.add(bottomPanel, BorderLayout.CENTER);
-
 
 		//center area
 		centerPanel = new JPanel();
@@ -108,9 +133,9 @@ public class OperationPanel extends JPanel {
 		this.add(centerPanel, BorderLayout.NORTH);
 		this.setPreferredSize(this.getPreferredSize());
 		
-		resultArea = new JTextArea(20,15);
-		resultArea.setEditable(false);
-		JScrollPane resultPane = new JScrollPane(resultArea);
+		resultTextArea = new JTextArea(20,15);
+		resultTextArea.setEditable(false);
+		JScrollPane resultPane = new JScrollPane(resultTextArea);
 
 		TitledBorder resultBorder = BorderFactory.createTitledBorder("Result:");
 		resultBorder.setTitleColor(Color.BLACK);
@@ -160,7 +185,7 @@ public class OperationPanel extends JPanel {
 				res += "\nDeterminant = " + matrix.CalcDeterminant() + "\n";
 			}
 
-			resultArea.setText(res);
+			resultTextArea.setText(res);
 		}
 	}
 
@@ -209,7 +234,7 @@ public class OperationPanel extends JPanel {
 				res += "\nPivot array\n"; //TODO: + pivot array
 			}
 			
-			resultArea.setText(res);
+			resultTextArea.setText(res);
 		}
 	}
 
@@ -219,7 +244,7 @@ public class OperationPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			matrixTextArea.setText("");
 			vectorTextArea.setText("");
-			resultArea.setText("");
+			resultTextArea.setText("");
 		}
 
 	}
@@ -261,5 +286,68 @@ public class OperationPanel extends JPanel {
 			}
 		}
 		return matrix;
+	}
+	
+	public class LoadActionListener implements ActionListener { //TODO: not working in browser
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				String line="";
+				BufferedReader matrixFromFile = new BufferedReader(new FileReader("matrix.db"));
+
+				while ( (line = matrixFromFile.readLine()) != null )
+					matrixTextArea.append(line+"\n");
+				matrixFromFile.close();
+				
+				line="";
+				BufferedReader vectorFromFile = new BufferedReader(new FileReader("vector.db"));
+
+				while ( (line = vectorFromFile.readLine()) != null )
+					vectorTextArea.append(line+"\n");
+				vectorFromFile.close();	
+				
+				line="";
+				BufferedReader resultFromFile = new BufferedReader(new FileReader("result.db"));
+
+				while ( (line = resultFromFile.readLine()) != null )
+					resultTextArea.append(line+"\n");
+				resultFromFile.close();		
+				
+				JOptionPane.showMessageDialog(new JFrame(), "Load from file with success!");
+			}
+			catch(FileNotFoundException exc) {
+				JOptionPane.showMessageDialog(new JFrame(), "Error: file not found!");
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(new JFrame(), "Error: reading from file");
+			}
+		}
+		
+	}
+	
+	public class SaveActionListener implements ActionListener {  //TODO: not working in browser
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {				
+				FileWriter matrixWriter = new FileWriter("matrix.db", false);
+				matrixWriter.write(matrixTextArea.getText());
+				matrixWriter.close();
+
+				FileWriter vectorWriter = new FileWriter("vector.db", false);
+				vectorWriter.write(vectorTextArea.getText());
+				vectorWriter.close();
+
+				FileWriter resultWriter = new FileWriter("result.db", false);
+				resultWriter.write(resultTextArea.getText());
+				resultWriter.close();
+				JOptionPane.showMessageDialog(new JFrame(), "Saved to file with success!");
+			}
+			catch (IOException e1) {
+				JOptionPane.showMessageDialog(new JFrame(), "Error occured during saving!");
+			}
+			
+		}
+		
 	}
 }
