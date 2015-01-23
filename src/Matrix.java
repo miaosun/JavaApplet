@@ -280,7 +280,7 @@ public class Matrix {
 		for(int i=0; i<nrows; i++)
 		{
 			b.set(i,1.0);
-			x = lu_solve(l, u, b);
+			x = lu_solve(l, u, p.mult(b));
 			for(int j=0; j<ncols; j++)
 				inv.set(j,i,x.get(j));
 			b.set(i, 0.0);
@@ -322,66 +322,6 @@ public class Matrix {
 		return x;
 	}
 
-	//	public Matrix compute_lower()
-	//	{
-	//		Matrix temp = new Matrix(this);
-	//
-	//		double mult;
-	//		// LU (Doolittle's) decomposition without pivoting
-	//		for (int k = 0; k < nrows - 1; k++) {
-	//			for (int i = k + 1; i < nrows; i++) {
-	//				if (temp.get(k,k) == 0)
-	//				{
-	//					System.out.print("pivot is zero\n");
-	//					System.exit(1);
-	//				}
-	//				mult = temp.get(i,k)/temp.get(k,k);
-	//				temp.set(i,k,mult);                      // entries of L are saved in temp
-	//				for (int j = k + 1; j < nrows; j++) {
-	//					temp.set(i,j, temp.get(i,j) - mult*temp.get(k,j));      // entries of U are saved in temp
-	//				}
-	//			}
-	//		}
-	//		Matrix l = new Matrix(nrows, ncols);
-	//		// create l from temp
-	//		for (int i=0; i<nrows; i++) 
-	//			l.set(i,i,1.0);
-	//		for (int i=1; i<nrows; i++)
-	//			for (int j=0; j<i; j++) 
-	//				l.set(i,j,temp.get(i,j));
-	//
-	//		return l;
-	//	}
-	//	
-	//	public Matrix compute_upper()
-	//	{
-	//		Matrix temp = new Matrix(this);
-	//
-	//		double mult;
-	//		// LU (Doolittle's) decomposition without pivoting
-	//		for (int k = 0; k < nrows - 1; k++) {
-	//			for (int i = k + 1; i < nrows; i++) {
-	//				if (temp.get(k,k) == 0)
-	//				{
-	//					System.out.print("pivot is zero\n");
-	//					System.exit(1);
-	//				}
-	//				mult = temp.get(i,k)/temp.get(k,k);
-	//				temp.set(i,k,mult);                      // entries of L are saved in temp
-	//				for (int j = k + 1; j < nrows; j++) {
-	//					temp.set(i,j, temp.get(i,j) - mult*temp.get(k,j));      // entries of U are saved in temp
-	//				}
-	//			}
-	//		}
-	//		Matrix u = new Matrix(nrows, ncols);
-	//		// create u from temp
-	//		for (int i=0; i<nrows; i++)
-	//			for (int j=i; j<ncols; j++) 
-	//				u.set(i,j,temp.get(i,j));
-	//
-	//		return u;
-	//	}
-	//	
 	public void lu_solve(Matrix l, Matrix u, Vector b, int n, Vector x)
 	{
 		Vector temp = new Vector(b);

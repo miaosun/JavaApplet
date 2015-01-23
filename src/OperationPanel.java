@@ -222,12 +222,7 @@ public class OperationPanel extends JPanel {
 				res += "\nLower matrix\n" + lower.toString();
 				res += "\nUpper matrix\n" + upper.toString();
 
-				// get the inversion of the original matrix, not for the ordered matrix
-				Matrix l = new Matrix(matrix.nrows, matrix.ncols);
-				Matrix u = new Matrix(matrix.nrows, matrix.ncols);
-
-				matrix.lu_fact(matrix, l, u, matrix.nrows);
-				Matrix inverse = new Matrix(matrix.inverse(l, u));
+				Matrix inverse = new Matrix(matrix.inverse(lower, upper));
 				res += "\nInverse matrix\n" + inverse.toString();
 
 				res += "\nDeterminant = " + matrix.CalcDeterminant() + "\n";
