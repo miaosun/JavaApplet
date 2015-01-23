@@ -86,25 +86,17 @@ public class OperationPanel extends JPanel {
 		inverseButton.setToolTipText("Get matrix inversion result");
 		clearButton = new JButton("Clear");
 		clearButton.setToolTipText("Clears all the contents");
-		loadButton = new JButton("Load");
-		loadButton.setToolTipText("Load computation from file");
-		saveButton = new JButton("Save");
-		saveButton.setToolTipText("Save computation to file");
 		ToolTipManager.sharedInstance().setInitialDelay(5);
 
 		// Action Listeners
 		luButton.addActionListener(new LUActionListener());
 		inverseButton.addActionListener(new InverseActionListener());
 		clearButton.addActionListener(new ClearActionListener());
-		loadButton.addActionListener(new LoadActionListener());
-		saveButton.addActionListener(new SaveActionListener());
 		
 		bottomPanel = new JPanel();
 		bottomPanel.add(luButton);
 		bottomPanel.add(inverseButton);
 		bottomPanel.add(clearButton);
-		bottomPanel.add(loadButton);
-		bottomPanel.add(saveButton);
 
 		this.add(bottomPanel, BorderLayout.CENTER);
 
@@ -281,68 +273,5 @@ public class OperationPanel extends JPanel {
 			}
 		}
 		return matrix;
-	}
-	
-	public class LoadActionListener implements ActionListener { //TODO: not working in browser
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			try {
-				String line="";
-				BufferedReader matrixFromFile = new BufferedReader(new FileReader("matrix.db"));
-
-				while ( (line = matrixFromFile.readLine()) != null )
-					matrixTextArea.append(line+"\n");
-				matrixFromFile.close();
-				
-				line="";
-				BufferedReader vectorFromFile = new BufferedReader(new FileReader("vector.db"));
-
-				while ( (line = vectorFromFile.readLine()) != null )
-					vectorTextArea.append(line+"\n");
-				vectorFromFile.close();	
-				
-				line="";
-				BufferedReader resultFromFile = new BufferedReader(new FileReader("result.db"));
-
-				while ( (line = resultFromFile.readLine()) != null )
-					resultTextArea.append(line+"\n");
-				resultFromFile.close();		
-				
-				JOptionPane.showMessageDialog(new JFrame(), "Load from file with success!");
-			}
-			catch(FileNotFoundException exc) {
-				JOptionPane.showMessageDialog(new JFrame(), "Error: file not found!");
-			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(new JFrame(), "Error: reading from file");
-			}
-		}
-		
-	}
-	
-	public class SaveActionListener implements ActionListener {  //TODO: not working in browser
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			try {				
-				FileWriter matrixWriter = new FileWriter("matrix.db", false);
-				matrixWriter.write(matrixTextArea.getText());
-				matrixWriter.close();
-
-				FileWriter vectorWriter = new FileWriter("vector.db", false);
-				vectorWriter.write(vectorTextArea.getText());
-				vectorWriter.close();
-
-				FileWriter resultWriter = new FileWriter("result.db", false);
-				resultWriter.write(resultTextArea.getText());
-				resultWriter.close();
-				JOptionPane.showMessageDialog(new JFrame(), "Saved to file with success!");
-			}
-			catch (IOException e1) {
-				JOptionPane.showMessageDialog(new JFrame(), "Error occured during saving!");
-			}
-			
-		}
-		
 	}
 }
