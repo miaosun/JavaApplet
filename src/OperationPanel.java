@@ -212,7 +212,16 @@ public class OperationPanel extends JPanel {
 				res += "\nInverse matrix\n" + inverse.toString();
 
 				res += "\nDeterminant = " + matrix.CalcDeterminant() + "\n";
-				res += "\nPivot array\n"; //TODO: + pivot array
+				res += "\nPivot array: "; 
+				
+				for(int i=0; i<p.ncols; i++)
+				{
+					for(int j=0; j<p.nrows; j++)
+					{
+						if(p.get(i, j) == 1)
+							res += j+1 + " ";
+					}
+				}
 			}
 			
 			resultTextArea.setText(res);
