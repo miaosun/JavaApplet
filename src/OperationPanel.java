@@ -157,7 +157,7 @@ public class OperationPanel extends JPanel {
 	 *  4.  Compute the reordered Matrix
 	 *  5.  Compute the lower and upper Matrix
 	 *  6.  Solve the differential system
-	 *  7.  Display all the information in the result panel @see {@link MainFrame#resultTextArea}
+	 *  7.  Display all the information in the result panel
 	 *
 	 *  @see OperationPanel#getMatrix()
 	 *  @see OperationPanel#getVector()
@@ -174,10 +174,6 @@ public class OperationPanel extends JPanel {
 	 *  @see Vector#size()
 	 *  @see Vector#toString()
 	 *  
-     *  @exception SizeNotMatchException
-     *              if the sizes user input Matrix and Vector are not match for operations 
-     *          
-     *  @catch SizeNotMatchException
 	 *  </pre>
 	 */
 	public class LUActionListener implements ActionListener {
@@ -246,7 +242,7 @@ public class OperationPanel extends JPanel {
 	 *  4.  Compute the lower and upper Matrix
 	 *  5.  Compute the inversed Matrix
 	 *  6.  Compute the pivot array
-	 *  7.  Display all the information in the result panel  @see {@link MainFrame#resultTextArea}
+	 *  7.  Display all the information in the result panel
 	 *
 	 *  @see OperationPanel#getMatrix()
 	 *  @see Matrix#CalcDeterminant()
@@ -257,10 +253,7 @@ public class OperationPanel extends JPanel {
 	 *  @see Matrix#mult(Matrix)
 	 *  @see Matrix#inverse(Matrix, Matrix)
 	 *  @see Matrix#lu_fact(Matrix, Matrix, Matrix, int)
-     *  @exception SizeNotMatchException
-     *              if user input Matrix is not a square Matrix
-     *         
-     *  @catch SizeNotMatchException            
+	 *  
 	 *  </pre>
 	 */
 	public class InverseActionListener implements ActionListener {
